@@ -1,0 +1,2 @@
+Phytoplasma_asteris	Tests/test_data/GCA_017307255.1_ASM1730725v1_genomic.fna.gz
+Kapabacteria_thiocyanatum	Tests/test_data/GCA_003181115.1_ASM318111v1_genomic.fna.gz
