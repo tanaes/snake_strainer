@@ -44,10 +44,6 @@ rule index_db:
         "output/logs/index_db.log"
     conda:
         "../env/bowtie2.yaml"
-    params:
-        extra="",  # optional parameters,
-        indexbase=join(config['host_filter']['db_dir'],
-                       config['host_filter']['accn'])
     threads: 8
     shell:
         """

@@ -1,5 +1,7 @@
 #config['references'][wildcards.ref_set]['prefix']
 
+samples_fp: 'samples.yaml'
+
 references:
   local:
     prefix: 'local'
