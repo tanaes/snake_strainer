@@ -12,21 +12,20 @@ rule calc_stb:
          -f {input.derep_genomes} \
          -o {output.stb_file}
 
-        cat {derep_genomes}/* > {output.fasta_cat}
+        cat {input.derep_genomes}/* > {output.fasta_cat}
         """
 
 
 rule prep_drep:
     input:
-        prodigal='output/drep/data/prodigal',
-        derep_genomes='output/drep/dereplicated_genomes'
+        prodigal='output/drep/data/prodigal'
     output:
         fna_cat='output/instrain/input/genes/dereplicated_genomes.genes.fna',
         faa_cat='output/instrain/input/genes/dereplicated_genomes.genes.faa'
     shell:
         """
-        cat {prodigal}/*.faa > {output.faa_cat}
-        cat {prodigal}/*.fna > {output.fna_cat}
+        cat {input.prodigal}/*.faa > {output.faa_cat}
+        cat {input.prodigal}/*.fna > {output.fna_cat}
         """
 
 rule instrain:
