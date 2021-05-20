@@ -18,7 +18,7 @@ rule calc_stb:
 
 rule prep_drep:
     input:
-        prodigal='output/drep/data/Prodigal',
+        prodigal='output/drep/data/prodigal',
         derep_genomes='output/drep/dereplicated_genomes'
     output:
         fna_cat='output/instrain/input/genes/dereplicated_genomes.genes.fna',
