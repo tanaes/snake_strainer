@@ -87,7 +87,8 @@ rule drep:
     input:
         'output/references.txt'
     output:
-        directory('output/drep/dereplicated_genomes')
+        drep_dir=directory('output/drep'),
+        genome_info='output/drep/data_tables/genomeInformation.csv'
     conda:
         '../Envs/instrain.yaml'
     params:
@@ -101,7 +102,7 @@ rule drep:
         'output/benchmarks/drep.txt'
     shell:
         """
-        dRep dereplicate {output[0]} \
+        dRep dereplicate {output.drep_dir} \
          -p {threads} \
          -g {input[0]} \
          -sa {params.sa} \
