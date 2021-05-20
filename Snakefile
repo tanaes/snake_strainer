@@ -17,4 +17,6 @@ rule all:
         rules.import_genomes.output,
         rules.drep.output,
         rules.prep_drep.output,
-        rules.calc_stb.output
+        rules.calc_stb.output,
+        expand(rules.instrain_profile.output.profile,
+               sample=samples)
