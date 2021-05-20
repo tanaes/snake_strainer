@@ -1,9 +1,10 @@
 import pandas as pd
 from os.path import join
 
-configfile: "config.yaml"
+configfile: 'config.yaml'
 
-include: "snakefiles/drep.smk"
+include: 'snakefiles/drep.smk'
+include: 'snakefiles/instrain.smk'
 
 references = config['references']
 
