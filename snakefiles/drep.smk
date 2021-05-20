@@ -88,6 +88,7 @@ rule drep:
         'output/references.txt'
     output:
         drep_dir=directory('output/drep'),
+        derep_genomes=directory('output/drep/dereplicated_genomes'),
         genome_info='output/drep/data_tables/genomeInformation.csv'
     conda:
         '../Envs/instrain.yaml'
