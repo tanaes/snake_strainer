@@ -15,3 +15,7 @@ params:
     sa: 95
     other: ''
     threads: 4
+  bowtie2:
+    threads: 4
+    index: ''
+    map: ''

@@ -44,10 +44,13 @@ rule index_db:
         "output/logs/index_db.log"
     conda:
         "../Envs/bowtie2.yaml"
-    threads: 8
+    threads:
+        config['params']['bowtie2']['threads']
+    params:
+        other=config['params']['bowtie2']['index']
     shell:
         """
-        bowtie2-build --threads {threads} {params.extra} \
+        bowtie2-build --threads {threads} {params.other} \
         {input.reference} references 2> {log} 1>&2
         """
 
@@ -65,13 +68,17 @@ rule map_reads:
         "../Envs/bowtie2.yaml"
     log:
         "output/logs/map_reads/map_reads-{sample}.log"
-    threads: 8
+    threads:
+        config['params']['bowtie2']['threads']
+    params:
+        other=config['params']['bowtie2']['map']
     shell:
         """
         bowtie2 -p {threads} \
         -x output/instrain/input/references \
         -1 {input.fwd} \
         -2 {input.rev} \
+        {params.other} \
         > {output.aln} 2> {log}
         """
 
