@@ -7,6 +7,10 @@ include: 'snakefiles/drep.smk'
 include: 'snakefiles/instrain.smk'
 
 references = config['references']
+samples_df = pd.read_csv(config['samples_fp'], sep='\t',
+                         header=0, index_col=0)
+
+samples = samples_df.index
 
 rule all:
     input:

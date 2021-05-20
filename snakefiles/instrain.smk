@@ -28,7 +28,74 @@ rule prep_drep:
         cat {input.prodigal}/*.fna > {output.fna_cat}
         """
 
-rule instrain:
+
+rule index_db:
     input:
-        rules.prep_drep.output,
-        rules.calc_stb.output
+        reference=rules.calc_stb.output.fasta_cat
+    output:
+        multiext('output/instrain/input/references',
+                 ".1.bt2",
+                 ".2.bt2",
+                 ".3.bt2",
+                 ".4.bt2",
+                 ".rev.1.bt2",
+                 ".rev.2.bt2")
+    log:
+        "output/logs/index_db.log"
+    conda:
+        "../env/bowtie2.yaml"
+    params:
+        extra="",  # optional parameters,
+        indexbase=join(config['host_filter']['db_dir'],
+                       config['host_filter']['accn'])
+    threads: 8
+    shell:
+        """
+        bowtie2-build --threads {threads} {params.extra} \
+        {input.reference} references 2> {log} 1>&2
+        """
+
+
+rule map_reads:
+    input:
+        fwd=lambda wildcards: samples_df.loc[wildcards.sample,
+                                             'R1'],
+        rev=lambda wildcards: samples_df.loc[wildcards.sample,
+                                             'R2'],
+        db=rules.index_db.output
+    output:
+        aln='output/instrain/input/alignments/{sample}.sam'
+    log:
+        "output/logs/map_reads/map_reads-{sample}.log"
+    threads: 8
+    shell:
+        """
+        bowtie2 -p {threads} \
+        -x output/instrain/input/references \
+        -1 {input.fwd} \
+        -2 {input.rev} \
+        > {output.aln} 2> {log}
+        """
+
+
+
+rule instrain_profile:
+    input:
+        aln=rules.map_reads.output.aln,
+        reference=rules.calc_stb.output.fasta_cat,
+        fna_cat=rules.prep_drep.output.fna_cat,
+        faa_cat=rules.prep_drep.output.faa_cat,
+        stb_file=rules.calc_stb.output.stb_file
+    output:
+        profile='output/instrain/output/profiles/{sample}.IS'
+    threads: 4
+    shell:
+        """
+        inStrain profile {input.aln} \
+        {input.reference} \
+        -o {output.profile} \
+        -p {threads} \
+        -g {input.fna_cat} \
+        -s {input.stb_file} \
+        --database_mode
+        """
