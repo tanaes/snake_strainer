@@ -43,7 +43,7 @@ rule index_db:
     log:
         "output/logs/index_db.log"
     conda:
-        "../env/bowtie2.yaml"
+        "../Envs/bowtie2.yaml"
     threads: 8
     shell:
         """
@@ -61,6 +61,8 @@ rule map_reads:
         db=rules.index_db.output
     output:
         aln='output/instrain/input/alignments/{sample}.sam'
+    conda:
+        "../Envs/bowtie2.yaml"
     log:
         "output/logs/map_reads/map_reads-{sample}.log"
     threads: 8
@@ -84,6 +86,8 @@ rule instrain_profile:
         stb_file=rules.calc_stb.output.stb_file
     output:
         profile='output/instrain/output/profiles/{sample}.IS'
+    conda:
+        "../Envs/instrain.yaml"
     threads: 4
     shell:
         """
