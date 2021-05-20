@@ -1,0 +1,6 @@
+#config['references'][wildcards.ref_set]['prefix']
+
+references:
+  test:
+    prefix: 'test'
+    genome_list: 'Tests/genomes.txt'

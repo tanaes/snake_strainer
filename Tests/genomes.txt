@@ -1,0 +1,2 @@
+pathtest	Tests/test_data/GCA_017307255.1_ASM1730725v1_genomic.fna.gz
+URLtest	https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/181/115/GCA_003181115.1_ASM318111v1/GCA_003181115.1_ASM318111v1_genomic.fna.gz
