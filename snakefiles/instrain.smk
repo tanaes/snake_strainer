@@ -9,7 +9,7 @@ rule calc_stb:
     shell:
         """
         parse_stb.py --reverse \
-         -f {input.derep_genomes} \
+         -f {input.derep_genomes}/* \
          -o {output.stb_file}
 
         cat {input.derep_genomes}/* > {output.fasta_cat}
