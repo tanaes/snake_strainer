@@ -106,6 +106,6 @@ rule drep:
          -p {threads} \
          -g {input[0]} \
          -sa {params.sa} \
-         {params.other}
+         {params.other} 2> {log} 1>&2
         """
 
