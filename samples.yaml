@@ -1,3 +1,0 @@
-Sample	R1	R2
-amy	Tests/test_data/test_reads/S22205_S104_L001_R1_001.fastq.gz  Tests/test_data/test_reads/S22205_S104_L001_R2_001.fastq.gz
-bob	Tests/test_data/test_reads/S22207_S103_L001_R1_001.fastq.gz  Tests/test_data/test_reads/S22207_S103_L001_R2_001.fastq.gz

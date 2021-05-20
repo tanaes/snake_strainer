@@ -54,10 +54,10 @@ rule index_db:
 
 rule map_reads:
     input:
-        fwd=lambda wildcards: samples_df.loc[wildcards.sample,
-                                             'R1'],
-        rev=lambda wildcards: samples_df.loc[wildcards.sample,
-                                             'R2'],
+        fwd=lambda wildcards: get_read(wildcards.sample,
+                                       'R1'),
+        rev=lambda wildcards: get_read(wildcards.sample,
+                                       'R2'),
         db=rules.index_db.output
     output:
         aln='output/instrain/input/alignments/{sample}.sam'
