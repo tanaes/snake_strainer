@@ -1,0 +1,11 @@
+channels:
+  - bioconda
+  - defaults
+  - conda-forge
+dependencies:
+  - coverm==0.6.1
+  - fastani==1.32
+  - coverm==0.6.1
+  - prodigal==2.6.3
+  - instrain==1.5.3
+  - drep==3.2.0
