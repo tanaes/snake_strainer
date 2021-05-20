@@ -51,7 +51,7 @@ rule index_db:
     shell:
         """
         bowtie2-build --threads {threads} {params.other} \
-        {input.reference} references 2> {log} 1>&2
+        {input.reference} output/instrain/input/references 2> {log} 1>&2
         """
 
 
