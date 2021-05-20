@@ -1,4 +1,3 @@
-pathtest	Tests/test_data/GCA_017307255.1_ASM1730725v1_genomic.fna.gz
 Enterococcus_casseliflavus_EC20	https://github.com/MrOlm/drep/blob/master/tests/genomes/Enterococcus_casseliflavus_EC20.fasta
 Enterococcus_faecalis_T2.fna	https://github.com/MrOlm/drep/blob/master/tests/genomes/Enterococcus_faecalis_T2.fna
 Enterococcus_faecalis_TX0104	https://github.com/MrOlm/drep/blob/master/tests/genomes/Enterococcus_faecalis_TX0104.fa
