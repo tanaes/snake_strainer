@@ -80,4 +80,31 @@ rule import_genomes:
                     for line in f:
                         o.write(line)
 
+rule drep:
+    """
+    Runs dRep
+    """
+    input:
+        'output/references.txt'
+    output:
+        directory('output/drep/dereplicated_genomes')
+    conda:
+        '../Envs/instrain.yaml'
+    params:
+        sa=config['params']['drep']['sa'],
+        other=config['params']['drep']['other']
+    log:
+        'output/logs/drep.log'
+    threads:
+        config['params']['drep']['threads']
+    benchmark:
+        'output/benchmarks/drep.txt'
+    shell:
+        """
+        dRep dereplicate {output[0]} \
+         -p {threads} \
+         -g {input[0]} \
+         -sa {params.sa} \
+         {params.other}
+        """
 

@@ -9,4 +9,5 @@ references = config['references']
 
 rule all:
 	input:
-		rules.import_genomes.output
+		rules.import_genomes.output,
+		rules.drep.output

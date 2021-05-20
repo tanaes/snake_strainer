@@ -7,3 +7,9 @@ references:
   remote:
     prefix: 'remote'
     genome_list: 'Tests/remote_genomes.txt'
+
+params:
+  drep:
+    sa: 95
+    other: ''
+    threads: 4
