@@ -90,7 +90,7 @@ rule drep:
         drep_dir=directory('output/drep'),
         derep_genomes=directory('output/drep/dereplicated_genomes'),
         genome_info='output/drep/data_tables/genomeInformation.csv',
-        prodigal='output/drep/data/prodigal'
+        prodigal=directory('output/drep/data/prodigal')
     conda:
         '../Envs/instrain.yaml'
     params:

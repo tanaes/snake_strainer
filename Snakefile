@@ -13,8 +13,7 @@ samples_df = pd.read_csv(config['samples_fp'],
                          index_col=0)
 
 samples = list(samples_df.index)
-print('\n\n\n\n\n')
-print(samples_df)
+
 
 def get_read(sample, read):
     return(samples_df.loc[sample, read])

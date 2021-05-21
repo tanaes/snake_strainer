@@ -14,7 +14,7 @@ params:
   drep:
     sa: 95
     other: ''
-    threads: 4
+    threads: 12
   bowtie2:
     threads: 4
     index: ''
