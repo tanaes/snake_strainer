@@ -92,7 +92,7 @@ rule instrain_profile:
         faa_cat=rules.prep_drep.output.faa_cat,
         stb_file=rules.calc_stb.output.stb_file
     output:
-        profile='output/instrain/output/profiles/{sample}.IS'
+        profile=directory('output/instrain/output/profiles/{sample}.IS')
     conda:
         "../Envs/instrain.yaml"
     threads: 4
