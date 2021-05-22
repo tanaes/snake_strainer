@@ -3,9 +3,6 @@ from os.path import join
 
 configfile: 'config.yaml'
 
-include: 'snakefiles/drep.smk'
-include: 'snakefiles/instrain.smk'
-
 references = config['references']
 samples_df = pd.read_csv(config['samples_fp'],
                          sep='\t',
@@ -13,6 +10,9 @@ samples_df = pd.read_csv(config['samples_fp'],
                          index_col=0)
 
 samples = list(samples_df.index)
+
+include: 'snakefiles/drep.smk'
+include: 'snakefiles/instrain.smk'
 
 
 def get_read(sample, read):
