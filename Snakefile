@@ -25,5 +25,4 @@ rule all:
         rules.drep.output,
         rules.prep_drep.output,
         rules.calc_stb.output,
-        expand(rules.instrain_profile.output.profile,
-               sample=samples)
+        rules.instrain_compare.output

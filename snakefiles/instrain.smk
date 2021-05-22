@@ -106,3 +106,28 @@ rule instrain_profile:
         -s {input.stb_file} \
         --database_mode
         """
+
+
+rule instrain_compare:
+    input:
+        profiles=expand(rules.instrain_profile.output.profile,
+                        sample=samples),
+        stb_file=rules.calc_stb.output.stb_file
+    output:
+        compare=directory('output/instrain/output/compare')
+    threads:
+        config['params']['inStrain']['compare']['threads']
+    conda:
+        "../Envs/instrain.yaml"
+    log:
+        "output/logs/instrain/instrain_compare.log"
+    shell:
+        """
+        inStrain compare \
+        -s {input.stb_file} \
+        -p {threads} \
+        --database_mode \
+        -o {output.compare} \
+        -i {input.profiles} 2> {log} 1>&2
+
+        """
