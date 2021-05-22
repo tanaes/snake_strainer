@@ -116,7 +116,7 @@ rule instrain_compare:
     output:
         compare=directory('output/instrain/output/compare')
     threads:
-        config['params']['inStrain']['compare']['threads']
+        config['params']['instrain']['compare']['threads']
     conda:
         "../Envs/instrain.yaml"
     log:

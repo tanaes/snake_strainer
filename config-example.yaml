@@ -19,3 +19,7 @@ params:
     threads: 4
     index: ''
     map: ''
+  instrain:
+      compare:
+          threads: 24
+      
