@@ -7,5 +7,6 @@ dependencies:
   - fastani==1.32
   - prodigal==2.6.3
   - instrain==1.5.3
+  - bedtools>=2.30
   - drep==3.2.0
   - checkm-genome>=1.1.0

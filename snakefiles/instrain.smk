@@ -92,7 +92,8 @@ rule instrain_profile:
         faa_cat=rules.prep_drep.output.faa_cat,
         stb_file=rules.calc_stb.output.stb_file
     output:
-        profile=directory('output/instrain/output/profiles/{sample}.IS')
+        profile=directory('output/instrain/output/profiles/{sample}.IS'),
+        bam='output/instrain/input/alignments/{sample}.sorted.bam'
     conda:
         "../Envs/instrain.yaml"
     threads: 4
@@ -131,3 +132,24 @@ rule instrain_compare:
         -i {input.profiles} 2> {log} 1>&2
 
         """
+
+
+rule coverage_calc:
+    input:
+        bam=rules.instrain_profile.bam
+    output:
+        cov='output/instrain/input/alignments/{sample}.cov'
+    conda:
+        "../Envs/instrain.yaml"
+    log:
+        "output/logs/instrain/coverage_calc.log"
+    shell:
+        """
+        bedtools genomecov -ibam {input.bam} -dz > {output.cov} 2> {log}
+        """
+
+
+rule coverage:
+    input:
+        expand(rules.coverage_calc.output.cov,
+               sample=samples)
