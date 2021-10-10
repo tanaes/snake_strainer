@@ -142,7 +142,7 @@ rule coverage_calc:
     conda:
         "../Envs/instrain.yaml"
     log:
-        "output/logs/instrain/coverage_calc.log"
+        "output/logs/instrain/{sample}.coverage_calc.log"
     shell:
         """
         bedtools genomecov -ibam {input.bam} -dz > {output.cov} 2> {log}
