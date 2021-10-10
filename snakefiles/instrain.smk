@@ -136,7 +136,7 @@ rule instrain_compare:
 
 rule coverage_calc:
     input:
-        bam=rules.instrain_profile.bam
+        bam=rules.instrain_profile.output.bam
     output:
         cov='output/instrain/input/alignments/{sample}.cov'
     conda:
