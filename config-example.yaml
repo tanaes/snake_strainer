@@ -14,12 +14,10 @@ params:
   drep:
     sa: 95
     other: ''
-    threads: 12
   bowtie2:
-    threads: 4
     index: ''
     map: ''
   instrain:
-      compare:
-          threads: 24
+    profile: ''     
+    compare: ''
       

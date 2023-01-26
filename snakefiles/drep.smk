@@ -7,6 +7,7 @@ from urllib.request import urlretrieve
 
 import gzip
 
+localrules: import_genome_list, import_genomes
 
 def is_gzip(fp):
     with gzip.open(fp, 'r') as f:
@@ -99,7 +100,12 @@ rule drep:
     log:
         'output/logs/drep.log'
     threads:
-        config['params']['drep']['threads']
+        res['run_drep']['threads']
+    resources:
+        partition = res['run_drep']['partition'],
+        mem_mb = res['run_drep']['mem_mb'],
+        qos = res['run_drep']['qos'],
+        time = res['run_drep']['time']
     benchmark:
         'output/benchmarks/drep.txt'
     shell:

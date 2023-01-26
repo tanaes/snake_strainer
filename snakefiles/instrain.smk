@@ -1,3 +1,5 @@
+localrules: prep_drep
+
 rule calc_stb:
     input:
         derep_genomes='output/drep/dereplicated_genomes'
@@ -45,7 +47,12 @@ rule index_db:
     conda:
         "../Envs/bowtie2.yaml"
     threads:
-        config['params']['bowtie2']['threads']
+        res['bowtie2_build']['threads']
+    resources:
+        partition = res['bowtie2_build']['partition'],
+        mem_mb = res['bowtie2_build']['mem_mb'],
+        qos = res['bowtie2_build']['qos'],
+        time = res['bowtie2_build']['time']
     params:
         other=config['params']['bowtie2']['index']
     shell:
@@ -69,7 +76,12 @@ rule map_reads:
     log:
         "output/logs/map_reads/map_reads-{sample}.log"
     threads:
-        config['params']['bowtie2']['threads']
+        res['map_reads']['threads']
+    resources:
+        partition = res['map_reads']['partition'],
+        mem_mb = res['map_reads']['mem_mb'],
+        qos = res['map_reads']['qos'],
+        time = res['map_reads']['time']
     params:
         other=config['params']['bowtie2']['map']
     shell:
@@ -81,7 +93,6 @@ rule map_reads:
         {params.other} \
         > {output.aln} 2> {log}
         """
-
 
 
 rule instrain_profile:
@@ -96,7 +107,15 @@ rule instrain_profile:
         bam='output/instrain/input/alignments/{sample}.sorted.bam'
     conda:
         "../Envs/instrain.yaml"
-    threads: 4
+    threads:
+        res['instrain_profile']['threads']
+    resources:
+        partition = res['instrain_profile']['partition'],
+        mem_mb = res['instrain_profile']['mem_mb'],
+        qos = res['instrain_profile']['qos'],
+        time = res['instrain_profile']['time']
+    params:
+        other=config['params']['instrain']['profile']
     shell:
         """
         inStrain profile {input.aln} \
@@ -105,6 +124,7 @@ rule instrain_profile:
         -p {threads} \
         -g {input.fna_cat} \
         -s {input.stb_file} \
+        {params.other} \
         --database_mode
         """
 
@@ -117,7 +137,14 @@ rule instrain_compare:
     output:
         compare=directory('output/instrain/output/compare')
     threads:
-        config['params']['instrain']['compare']['threads']
+        res['instrain_compare']['threads']
+    resources:
+        partition = res['instrain_compare']['partition'],
+        mem_mb = res['instrain_compare']['mem_mb'],
+        qos = res['instrain_compare']['qos'],
+        time = res['instrain_compare']['time']
+    params:
+        other=config['params']['instrain']['compare']
     conda:
         "../Envs/instrain.yaml"
     log:
@@ -129,7 +156,9 @@ rule instrain_compare:
         -p {threads} \
         --database_mode \
         -o {output.compare} \
-        -i {input.profiles} 2> {log} 1>&2
+        -i {input.profiles} \
+        {params.other} \
+        2> {log} 1>&2
 
         """
 
