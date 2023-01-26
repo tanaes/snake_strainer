@@ -1,0 +1,3 @@
+[submodule "Resources/Profiles/smk-simple-slurm"]
+	path = Resources/Profiles/smk-simple-slurm
+	url = git@github.com:tanaes/smk-simple-slurm.git
