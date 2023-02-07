@@ -15,7 +15,7 @@ rule bakta:
         genome_fna=lambda wildcards: genome_fps[wildcards.genome]
     output:
         outfile='output/annotate/bakta/{genome}/{genome}.tsv',
-        outdir='output/annotate/bakta/{genome}'
+        outdir=directory('output/annotate/bakta/{genome}')
     params:
         db_path=config['params']['bakta']['db_path'],
         tmp_dir=config['params']['bakta']['tmp_dir']
