@@ -9,3 +9,28 @@ run_drep:
   mem_mb: 16000
   qos: normal
   partition: short
+bowtie2_build:
+  threads: 8
+  mem_mb: 32000
+  qos: normal
+  partition: short
+  time: 04-00:00:00
+map_reads:
+  threads: 4
+  mem_mb: 16000
+  qos: normal
+  partition: short
+  time: 04-00:00:00
+instrain_compare:
+  threads: 4
+  mem_mb: 16000
+  qos: normal
+  partition: short
+  time: 04-00:00:00
+instrain_profile:
+  threads: 4
+  mem_mb: 16000
+  qos: normal
+  partition: short
+  time: 04-00:00:00
+

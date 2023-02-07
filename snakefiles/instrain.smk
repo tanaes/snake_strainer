@@ -1,39 +1,32 @@
 localrules: prep_drep
 
-rule calc_stb:
-    input:
-        derep_genomes='output/drep/dereplicated_genomes'
+rule prep_drep:
     output:
+        fna_cat='output/instrain/input/genes/dereplicated_genomes.genes.fna',
+        faa_cat='output/instrain/input/genes/dereplicated_genomes.genes.faa',
         stb_file='output/instrain/input/dereplicated_genomes.stb',
         fasta_cat='output/instrain/input/dereplicated_genomes.fasta'
+    params:
+        derep_genomes=config['references']['drep']['prodigal'],
+        prodigal=config['references']['drep']['derep_genomes'],
     conda:
         '../Envs/instrain.yaml'
     shell:
         """
+        cat {params.prodigal}/*.faa > {output.faa_cat}
+        cat {params.prodigal}/*.fna > {output.fna_cat}
+
         parse_stb.py --reverse \
-         -f {input.derep_genomes}/* \
+         -f {params.derep_genomes}/* \
          -o {output.stb_file}
 
-        cat {input.derep_genomes}/* > {output.fasta_cat}
-        """
-
-
-rule prep_drep:
-    input:
-        prodigal='output/drep/data/prodigal'
-    output:
-        fna_cat='output/instrain/input/genes/dereplicated_genomes.genes.fna',
-        faa_cat='output/instrain/input/genes/dereplicated_genomes.genes.faa'
-    shell:
-        """
-        cat {input.prodigal}/*.faa > {output.faa_cat}
-        cat {input.prodigal}/*.fna > {output.fna_cat}
+        cat {params.derep_genomes}/* > {output.fasta_cat}
         """
 
 
 rule index_db:
     input:
-        reference=rules.calc_stb.output.fasta_cat
+        reference=rules.prep_drep.output.fasta_cat
     output:
         multiext('output/instrain/input/references',
                  ".1.bt2",
@@ -98,10 +91,10 @@ rule map_reads:
 rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
-        reference=rules.calc_stb.output.fasta_cat,
+        reference=rules.prep_drep.output.fasta_cat,
         fna_cat=rules.prep_drep.output.fna_cat,
         faa_cat=rules.prep_drep.output.faa_cat,
-        stb_file=rules.calc_stb.output.stb_file
+        stb_file=rules.prep_drep.output.stb_file
     output:
         profile=directory('output/instrain/output/profiles/{sample}.IS'),
         bam='output/instrain/input/alignments/{sample}.sorted.bam'
@@ -133,7 +126,7 @@ rule instrain_compare:
     input:
         profiles=expand(rules.instrain_profile.output.profile,
                         sample=samples),
-        stb_file=rules.calc_stb.output.stb_file
+        stb_file=rules.prep_drep.output.stb_file
     output:
         compare=directory('output/instrain/output/compare')
     threads:

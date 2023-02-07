@@ -25,7 +25,9 @@ samples_df = pd.read_csv(config['samples_fp'],
                          index_col=0)
 
 samples = list(samples_df.index)
-genomes = input_genomes(references['genome_list'])
+
+genome_fps = input_genomes(references['genome_list'])
+genomes = list(genome_fps.index)
 
 include: 'snakefiles/instrain.smk'
 include: 'snakefiles/annotate.smk'

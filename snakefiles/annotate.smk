@@ -12,7 +12,7 @@ rule bakta:
     Runs bakta
     """
     input:
-        genome_fna=lambda wildcards: genomes[wildcards.genome]
+        genome_fna=lambda wildcards: genome_fps[wildcards.genome]
     output:
         outfile='output/annotate/bakta/{genome}/{genome}.tsv',
         outdir='output/annotate/bakta/{genome}'
@@ -42,7 +42,7 @@ rule bakta:
         """
 
 rule annotate:
-	input:
+    input:
         expand('output/annotate/bakta/{genome}/{genome}.tsv',
-               genome=genomes.index)
+               genome=genomes)
 

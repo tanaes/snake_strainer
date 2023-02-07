@@ -2,11 +2,13 @@
 
 samples_fp: 'samples.txt'
 
+resources: 'Resources/resources.yaml'
+
 references:
-  genome_list: 'Test/references.txt'
+  genome_list: 'Tests/local_genomes.txt'
   drep:
-    prodigal: 'Test/drep/dereplicated_genomes'
-    derep_genomes: 'Test/drep/data/prodigal'
+    prodigal: 'Tests/drep/dereplicated_genomes'
+    derep_genomes: 'Tests/drep/data/prodigal'
 
 params:
   bowtie2:
