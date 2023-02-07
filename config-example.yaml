@@ -3,21 +3,18 @@
 samples_fp: 'samples.txt'
 
 references:
-  local:
-    prefix: 'local'
-    genome_list: 'Tests/local_genomes.txt'
-  remote:
-    prefix: 'remote'
-    genome_list: 'Tests/remote_genomes.txt'
+  genome_list: 'Test/references.txt'
+  drep:
+    prodigal: 'Test/drep/dereplicated_genomes'
+    derep_genomes: 'Test/drep/data/prodigal'
 
 params:
-  drep:
-    sa: 95
-    other: ''
   bowtie2:
     index: ''
     map: ''
   instrain:
     profile: ''     
     compare: ''
-      
+  bakta:
+    db_path: '/panfs/j4sanders/dbs/bakta'
+    other: ''

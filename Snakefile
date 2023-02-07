@@ -1,6 +1,16 @@
 import pandas as pd
 from os.path import join
 
+def get_read(sample, read):
+    return(samples_df.loc[sample, read])
+
+def input_genomes(ref_fp):
+    genomes = pd.read_csv(ref_fp, 
+                          sep='\t', 
+                          header=None, 
+                          index_col=0)
+    return(genomes[0])
+
 configfile: 'config.yaml'
 
 references = config['references']
@@ -10,19 +20,13 @@ samples_df = pd.read_csv(config['samples_fp'],
                          index_col=0)
 
 samples = list(samples_df.index)
+genomes = input_genomes(references['genome_list'])
 
-include: 'snakefiles/drep.smk'
 include: 'snakefiles/instrain.smk'
-
-
-def get_read(sample, read):
-    return(samples_df.loc[sample, read])
+include: 'snakefiles/annotate.smk'
 
 
 rule all:
     input:
-        rules.import_genomes.output,
-        rules.drep.output,
         rules.prep_drep.output,
-        rules.calc_stb.output,
         rules.instrain_compare.output
