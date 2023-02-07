@@ -9,7 +9,7 @@ def input_genomes(ref_fp):
                           sep='\t', 
                           header=None, 
                           index_col=0)
-    return(genomes[0])
+    return(genomes[1])
 
 configfile: 'config.yaml'
 
