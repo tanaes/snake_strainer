@@ -39,7 +39,7 @@ rule bakta:
             --output {output.outdir} \
             --prefix {wildcards.genome} \
             --threads {threads} \
-            --tmp-dir {params.tmp_dir}
+            --tmp-dir {params.tmp_dir} \
             {input.genome_fna} \
             2> {log} 1>&2
         """
