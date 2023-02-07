@@ -1,5 +1,7 @@
 import pandas as pd
 from os.path import join
+from yaml import safe_load
+
 
 def get_read(sample, read):
     return(samples_df.loc[sample, read])
@@ -12,6 +14,9 @@ def input_genomes(ref_fp):
     return(genomes[1])
 
 configfile: 'config.yaml'
+
+with open(config['resources'], 'r') as f:
+    res = safe_load(f)
 
 references = config['references']
 samples_df = pd.read_csv(config['samples_fp'],
