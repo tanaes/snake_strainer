@@ -1,6 +1,6 @@
 bakta:
-  threads: 8
-  mem_mb: 32000
+  threads: 4
+  mem_mb: 16000
   qos: normal
   partition: short
   time: '3:00:00'
