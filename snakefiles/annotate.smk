@@ -35,7 +35,7 @@ rule bakta:
         """
         bakta --db {params.db_path} \
             --verbose \
-            --output results/ \
+            --output {output.outdir} \
             --prefix {wildcards.genome} \
             --threads 8 {input.genome_fna}\
             2> {log} 1>&2
