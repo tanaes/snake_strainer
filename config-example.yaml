@@ -19,4 +19,5 @@ params:
     compare: ''
   bakta:
     db_path: '/panfs/j4sanders/dbs/bakta'
+    tmp_dir: 'output/annotate/bakta/tmp'
     other: ''

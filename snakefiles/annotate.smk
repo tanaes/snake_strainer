@@ -17,7 +17,8 @@ rule bakta:
         outfile='output/annotate/bakta/{genome}/{genome}.tsv',
         outdir='output/annotate/bakta/{genome}'
     params:
-        db_path=config['params']['bakta']['db_path']
+        db_path=config['params']['bakta']['db_path'],
+        tmp_dir=config['params']['bakta']['tmp_dir']
     log:
         'output/logs/annotate/bakta/bakta-{genome}.log'
     threads:
@@ -38,6 +39,7 @@ rule bakta:
             --output {output.outdir} \
             --prefix {wildcards.genome} \
             --threads {threads} \
+            --tmp-dir {params.tmp_dir}
             {input.genome_fna} \
             2> {log} 1>&2
         """
