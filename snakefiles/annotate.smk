@@ -22,6 +22,8 @@ rule bakta:
         'output/logs/annotate/bakta/bakta-{genome}.log'
     threads:
         res['bakta']['threads']
+    conda:
+        '../Envs/bakta.yaml'
     resources:
         partition = res['bakta']['partition'],
         mem_mb = res['bakta']['mem_mb'],
