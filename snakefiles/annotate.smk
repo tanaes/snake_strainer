@@ -37,7 +37,8 @@ rule bakta:
             --verbose \
             --output {output.outdir} \
             --prefix {wildcards.genome} \
-            --threads 8 {input.genome_fna}\
+            --threads {threads} \
+            {input.genome_fna} \
             2> {log} 1>&2
         """
 
