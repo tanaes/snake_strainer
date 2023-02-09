@@ -11,6 +11,8 @@ references:
     derep_genomes: 'Tests/drep/data/prodigal'
 
 params:
+  simplify_fastas:
+    prefix: 'sGB'
   bowtie2:
     index: ''
     map: ''

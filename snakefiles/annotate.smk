@@ -1,11 +1,10 @@
 import pandas as pd
 from os.path import join
-
+from os import makedirs
 
 rule prep_bakta:
     output:
         touch('output/annotate/bakta/prep.done')
-
 
 rule bakta:
     """
@@ -35,9 +34,9 @@ rule bakta:
     shell:
         """
         bakta --db {params.db_path} \
-            --verbose \
             --output {output.outdir} \
             --prefix {wildcards.genome} \
+            --keep-contig-headers \
             --threads {threads} \
             --tmp-dir {params.tmp_dir} \
             {input.genome_fna} \
