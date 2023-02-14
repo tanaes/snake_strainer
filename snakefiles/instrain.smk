@@ -50,7 +50,7 @@ rule cat_fasta:
 
 rule cat_fastas:
     input:
-        expand('output/instrain/input/dereplicated_genomes.fna',
+        expand('output/instrain/input/dereplicated_genomes.{ext}',
                ext=['fna','faa','ffn','gbff'])
 
 rule prep_stb_bakta:
