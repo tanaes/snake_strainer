@@ -15,11 +15,12 @@ def simplify_fasta(old_fp, new_fp, new_name):
             for line in f:
                 if line.startswith('>'):
                     n += 1
+                    old_contig = line[1:].rstrip().split(' ')[0]
                     contig_name = '{0}_{1}'.format(new_name,
                                                    n)
                     newline = '>{0} {1}\n'.format(contig_name,
                                                   line[1:].rstrip())
-                    contig_name_dict['old_contig'] = contig_name
+                    contig_name_dict[old_contig] = contig_name
                 else:
                     newline = line
                 o.write(newline)
