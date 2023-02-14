@@ -57,5 +57,4 @@ include: 'snakefiles/annotate.smk'
 
 rule all:
     input:
-        rules.prep_drep.output,
         rules.instrain_compare.output
