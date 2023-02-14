@@ -9,7 +9,7 @@ def get_read(sample, read):
 def input_genomes(ref_fp, prefix='sGB'):
     genomes = pd.read_csv(ref_fp, 
                           sep='\t', 
-                          header=None, 
+                          header=0, 
                           index_col=0)
 
     if 'fp' not in genomes.columns:
