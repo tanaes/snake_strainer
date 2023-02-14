@@ -1,5 +1,9 @@
 localrules: prep_drep_input, prep_drep
 
+def get_renamed_read(renamed, read, rev_rename_dict):
+    sample = rev_rename_dict[renamed]
+    return(samples_df.loc[sample, read])
+
 rule prep_drep_input:
     input:
         expand('output/genomes/renamed/fastas/{renamed}.fna',
@@ -96,17 +100,19 @@ rule index_db:
 
 rule map_reads:
     input:
-        fwd=lambda wildcards: get_read(wildcards.sample,
-                                       'R1'),
-        rev=lambda wildcards: get_read(wildcards.sample,
-                                       'R2'),
+        fwd=lambda wildcards: get_renamed_read(wildcards.renamed,
+                                       'R1',
+                                       rev_rename_dict),
+        rev=lambda wildcards: get_renamed_read(wildcards.renamed,
+                                       'R2',
+                                       rev_rename_dict),
         db=rules.index_db.output
     output:
-        aln='output/instrain/input/alignments/{sample}.sam'
+        aln='output/instrain/input/alignments/{renamed}.sam'
     conda:
         "../Envs/bowtie2.yaml"
     log:
-        "output/logs/map_reads/map_reads-{sample}.log"
+        "output/logs/map_reads/map_reads-{renamed}.log"
     threads:
         res['map_reads']['threads']
     resources:
@@ -129,12 +135,12 @@ rule map_reads:
 rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
-        reference=rules.prep_drep.output.fasta_cat,
-        genes_file=rules.prep_drep.output.fna_cat,
-        stb_file=rules.prep_drep.output.stb_file
+        reference='output/instrain/input/dereplicated_genomes.fna'
+        genes_file='output/instrain/input/dereplicated_genomes.gfa',
+        stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:
-        profile=directory('output/instrain/output/profiles/{sample}.IS'),
-        bam='output/instrain/input/alignments/{sample}.sorted.bam'
+        profile=directory('output/instrain/output/profiles/{renamed}.IS'),
+        bam='output/instrain/input/alignments/{renamed}.sorted.bam'
     conda:
         "../Envs/instrain.yaml"
     threads:
@@ -162,7 +168,7 @@ rule instrain_profile:
 rule instrain_compare:
     input:
         profiles=expand(rules.instrain_profile.output.profile,
-                        sample=samples),
+                        renamed=genome_fps['renamed']),
         stb_file=rules.prep_drep.output.stb_file
     output:
         compare=directory('output/instrain/output/compare')
@@ -197,11 +203,11 @@ rule coverage_calc:
     input:
         bam=rules.instrain_profile.output.bam
     output:
-        cov='output/instrain/input/alignments/{sample}.cov'
+        cov='output/instrain/input/alignments/{renamed}.cov'
     conda:
         "../Envs/instrain.yaml"
     log:
-        "output/logs/instrain/{sample}.coverage_calc.log"
+        "output/logs/instrain/{renamed}.coverage_calc.log"
     shell:
         """
         bedtools genomecov -ibam {input.bam} -dz > {output.cov} 2> {log}
@@ -211,4 +217,4 @@ rule coverage_calc:
 rule coverage:
     input:
         expand(rules.coverage_calc.output.cov,
-               sample=samples)
+               renamed=genome_fps['renamed'])
