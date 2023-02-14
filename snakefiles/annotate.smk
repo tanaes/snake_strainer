@@ -26,10 +26,10 @@ def simplify_fasta(old_fp, new_fp, new_name):
 
 rule rename_fasta:
     input:
-        genome_fna=lambda wildcards: genome_fps[wildcards.genome]
+        genome_fna=lambda wildcards: genome_fps.loc[rev_rename_dict[wildcards.renamed], 'fp']
     output:
         renamed_fna='output/genomes/renamed/fastas/{renamed}.fna',
-        contig_dict='output/genomes/renamed/contigs/{genome}.{renamed}.txt'
+        contig_dict='output/genomes/renamed/contigs/{renamed}.txt'
     run:
         contig_names = simplify_fasta(input.genome_fna,
                                       output.renamed_fna,

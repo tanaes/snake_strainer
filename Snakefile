@@ -41,13 +41,10 @@ samples_df = pd.read_csv(config['samples_fp'],
 samples = list(samples_df.index)
 prefix=config['params']['simplify_fastas']['prefix']
 
-input_fps = input_genomes(references['genome_list'])
-
-genome_fps = input_fps['fp']
+genome_fps = input_genomes(references['genome_list'])
 
 print(genome_fps)
 genomes = list(genome_fps.index)
-print(genomes)
 
 rev_rename_dict = {}
 for x in genome_fps.index:
