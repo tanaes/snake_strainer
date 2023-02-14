@@ -92,8 +92,7 @@ rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
         reference=rules.prep_drep.output.fasta_cat,
-        fna_cat=rules.prep_drep.output.fna_cat,
-        faa_cat=rules.prep_drep.output.faa_cat,
+        genes_file=rules.prep_drep.output.fna_cat,
         stb_file=rules.prep_drep.output.stb_file
     output:
         profile=directory('output/instrain/output/profiles/{sample}.IS'),
@@ -115,7 +114,7 @@ rule instrain_profile:
         {input.reference} \
         -o {output.profile} \
         -p {threads} \
-        -g {input.fna_cat} \
+        -g {input.genes_file} \
         -s {input.stb_file} \
         {params.other} \
         --database_mode
