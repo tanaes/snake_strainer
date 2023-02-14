@@ -1,6 +1,7 @@
 #config['references'][wildcards.ref_set]['prefix']
 
 samples_fp: 'samples.txt'
+reads_dir: '../sn-mg-pipeline/output/qc/host_filter/nonhost/'
 
 resources: 'Resources/resources.yaml'
 

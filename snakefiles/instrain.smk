@@ -97,10 +97,8 @@ rule index_db:
 
 rule map_reads:
     input:
-        fwd=lambda wildcards: get_read(wildcards.sample,
-                                       'R1'),
-        rev=lambda wildcards: get_read(wildcards.sample,
-                                       'R2'),
+        fwd=join(config['reads_dir'], '{sample}.R1.fastq.gz'),
+        rev=join(config['reads_dir'], '{sample}.R2.fastq.gz'),
         db=rules.index_db.output
     output:
         aln='output/instrain/input/alignments/{sample}.sam'
