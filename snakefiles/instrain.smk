@@ -1,8 +1,5 @@
 localrules: prep_drep_input, prep_drep
 
-def get_renamed_read(renamed, read, rev_rename_dict):
-    sample = rev_rename_dict[renamed]
-    return(samples_df.loc[sample, read])
 
 rule prep_drep_input:
     input:
@@ -100,19 +97,17 @@ rule index_db:
 
 rule map_reads:
     input:
-        fwd=lambda wildcards: get_renamed_read(wildcards.renamed,
-                                       'R1',
-                                       rev_rename_dict),
-        rev=lambda wildcards: get_renamed_read(wildcards.renamed,
-                                       'R2',
-                                       rev_rename_dict),
+        fwd=lambda wildcards: get_read(wildcards.sample,
+                                       'R1'),
+        rev=lambda wildcards: get_read(wildcards.sample,
+                                       'R2'),
         db=rules.index_db.output
     output:
-        aln='output/instrain/input/alignments/{renamed}.sam'
+        aln='output/instrain/input/alignments/{sample}.sam'
     conda:
         "../Envs/bowtie2.yaml"
     log:
-        "output/logs/map_reads/map_reads-{renamed}.log"
+        "output/logs/map_reads/map_reads-{sample}.log"
     threads:
         res['map_reads']['threads']
     resources:
@@ -139,8 +134,8 @@ rule instrain_profile:
         genes_file='output/instrain/input/dereplicated_genomes.gfa',
         stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:
-        profile=directory('output/instrain/output/profiles/{renamed}.IS'),
-        bam='output/instrain/input/alignments/{renamed}.sorted.bam'
+        profile=directory('output/instrain/output/profiles/{sample}.IS'),
+        bam='output/instrain/input/alignments/{sample}.sorted.bam'
     conda:
         "../Envs/instrain.yaml"
     threads:
@@ -168,7 +163,7 @@ rule instrain_profile:
 rule instrain_compare:
     input:
         profiles=expand(rules.instrain_profile.output.profile,
-                        renamed=genome_fps['renamed']),
+                        sample=samples),
         stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:
         compare=directory('output/instrain/output/compare')
@@ -203,11 +198,11 @@ rule coverage_calc:
     input:
         bam=rules.instrain_profile.output.bam
     output:
-        cov='output/instrain/input/alignments/{renamed}.cov'
+        cov='output/instrain/input/alignments/{sample}.cov'
     conda:
         "../Envs/instrain.yaml"
     log:
-        "output/logs/instrain/{renamed}.coverage_calc.log"
+        "output/logs/instrain/{sample}.coverage_calc.log"
     shell:
         """
         bedtools genomecov -ibam {input.bam} -dz > {output.cov} 2> {log}
@@ -217,4 +212,4 @@ rule coverage_calc:
 rule coverage:
     input:
         expand(rules.coverage_calc.output.cov,
-               renamed=genome_fps['renamed'])
+               sample=samples)
