@@ -84,5 +84,5 @@ rule bakta:
 rule annotate:
     input:
         expand('output/annotate/bakta/{renamed}/{renamed}.tsv',
-               renamed=genome_fps[1])
+               renamed=genome_fps['renamed'])
 
