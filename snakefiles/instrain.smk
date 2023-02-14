@@ -1,11 +1,57 @@
-localrules: prep_drep
+localrules: prep_drep_input, prep_drep
 
-rule prep_drep:
+rule prep_drep_input:
+    input:
+        expand('output/genomes/renamed/fastas/{renamed}.fna',
+               renamed=genome_fps['renamed'])
     output:
-        fna_cat='output/instrain/input/genes/dereplicated_genomes.genes.fna',
-        faa_cat='output/instrain/input/genes/dereplicated_genomes.genes.faa',
-        stb_file='output/instrain/input/dereplicated_genomes.stb',
-        fasta_cat='output/instrain/input/dereplicated_genomes.fasta'
+        'output/instrain/input/bakta_genome_list.txt'
+    run:
+        with open(output[0], 'w') as f:
+            for fp in input:
+                f.write('%s\n' % fp)
+
+# rule prep_drep_prodigal:
+#     output:
+#         fna_cat='output/instrain/input/prodigal/genes/dereplicated_genomes.genes.fna',
+#         faa_cat='output/instrain/input/prodigal/genes/dereplicated_genomes.genes.faa',
+#         stb_file='output/instrain/input/prodigal/dereplicated_genomes.stb',
+#         fasta_cat='output/instrain/input/prodigal/dereplicated_genomes.fasta'
+#     params:
+#         derep_genomes=config['references']['drep']['prodigal'],
+#         prodigal=config['references']['drep']['derep_genomes'],
+#     conda:
+#         '../Envs/instrain.yaml'
+#     shell:
+#         """
+#         cat {params.prodigal}/*.faa > {output.faa_cat}
+#         cat {params.prodigal}/*.fna > {output.fna_cat}
+
+#         parse_stb.py --reverse \
+#          -f {params.derep_genomes}/* \
+#          -o {output.stb_file}
+
+#         cat {params.derep_genomes}/* > {output.fasta_cat}
+#         """
+
+rule cat_fasta:
+    input:
+        fastas=lambda wildcards: expand('output/annotate/bakta/{renamed}/{renamed}.{wildcards.ext}',
+                                        renamed=genome_fps['renamed'])
+    output:
+        fasta_fp='output/instrain/input/dereplicated_genomes.{ext}'
+    run:
+        with open(output[0], 'w') as o:
+            for fp in input.fastas:
+                with open(fp, 'r') as f:
+                    for line in f:
+                        o.write(line)
+
+rule prep_stb_bakta:
+    input:
+        fasta_fps='output/instrain/input/bakta_genome_list.txt'
+    output:
+        stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     params:
         derep_genomes=config['references']['drep']['prodigal'],
         prodigal=config['references']['drep']['derep_genomes'],
@@ -13,20 +59,14 @@ rule prep_drep:
         '../Envs/instrain.yaml'
     shell:
         """
-        cat {params.prodigal}/*.faa > {output.faa_cat}
-        cat {params.prodigal}/*.fna > {output.fna_cat}
-
         parse_stb.py --reverse \
-         -f {params.derep_genomes}/* \
+         -f {input.fasta_fps} \
          -o {output.stb_file}
-
-        cat {params.derep_genomes}/* > {output.fasta_cat}
         """
-
 
 rule index_db:
     input:
-        reference=rules.prep_drep.output.fasta_cat
+        reference='output/instrain/input/dereplicated_genomes.fna'
     output:
         multiext('output/instrain/input/references',
                  ".1.bt2",
@@ -53,7 +93,6 @@ rule index_db:
         bowtie2-build --threads {threads} {params.other} \
         {input.reference} output/instrain/input/references 2> {log} 1>&2
         """
-
 
 rule map_reads:
     input:
@@ -86,7 +125,6 @@ rule map_reads:
         {params.other} \
         > {output.aln} 2> {log}
         """
-
 
 rule instrain_profile:
     input:
