@@ -29,13 +29,11 @@ rule rename_fasta:
         genome_fna=lambda wildcards: genome_fps[wildcards.genome]
     output:
         renamed_fna='output/genomes/renamed/fastas/{renamed}.fna',
-        contig_dict='output/genomes/renamed/contigs/{renamed}.txt'
-    params:
-        newname=genome_fps.loc[wildcards.genome, 1]
+        contig_dict='output/genomes/renamed/contigs/{genome}.{renamed}.txt'
     run:
         contig_names = simplify_fasta(input.genome_fna,
                                       output.renamed_fna,
-                                      params.newname)
+                                      wildcards.renamed)
         with open(output.contig_dict, 'w') as f:
             for old in contig_names:
                 f.write('{0}\t{1}\n'.format(old, contig_names[old]))
@@ -84,5 +82,7 @@ rule bakta:
 rule annotate:
     input:
         expand('output/annotate/bakta/{renamed}/{renamed}.tsv',
-               renamed=genome_fps['renamed'])
-
+               renamed=genome_fps['renamed']),
+        expand(contig_dict='output/genomes/renamed/contigs/{name[0]}.{name[1]}.txt',
+               name=[(x,
+                      genome_fps.loc[x, 'renamed']) for x in genome_fps.index])
