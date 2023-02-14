@@ -48,6 +48,13 @@ rule cat_fasta:
                     for line in f:
                         o.write(line)
 
+rule cat_fastas:
+    input:
+        'output/instrain/input/dereplicated_genomes.fna',
+        'output/instrain/input/dereplicated_genomes.faa',
+        'output/instrain/input/dereplicated_genomes.ffn',
+        'output/instrain/input/dereplicated_genomes.gbff'
+
 rule prep_stb_bakta:
     input:
         fasta_fps='output/instrain/input/bakta_genome_list.txt'
@@ -129,7 +136,7 @@ rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
         reference='output/instrain/input/dereplicated_genomes.fna',
-        genes_file='output/instrain/input/dereplicated_genomes.gfa',
+        genes_file='output/instrain/input/dereplicated_genomes.gbff',
         stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:
         profile=directory('output/instrain/output/profiles/{sample}.IS'),
