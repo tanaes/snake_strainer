@@ -9,6 +9,7 @@ localrules: rename_fasta, prep_bakta, annotate
 def simplify_fasta(old_fp, new_fp, new_name):
     contig_name_dict = OrderedDict({})
 
+    n = 0
     with open(old_fp, 'r') as f:
         with open(new_fp, 'w') as o:
             for line in f:

@@ -16,7 +16,7 @@ def input_genomes(ref_fp, prefix='sGB'):
         raise ValueError('must have fp column to fasta file')
 
     if 'renamed' not in genomes.columns:
-        new_names = ['{0}_{1}'.format(prefix,
+        new_names = ['{0}_{1:05d}'.format(prefix,
                                       x)
                      for x in range(genomes.shape[0])]
 
