@@ -48,6 +48,7 @@ genome_fps = input_fps['fp']
 print(genome_fps)
 genomes = list(genome_fps.index)
 print(genomes)
+rev_rename_dict = {genome_fps.loc[x, 'renamed']: x for x in genome_fps.index}
 
 include: 'snakefiles/instrain.smk'
 include: 'snakefiles/annotate.smk'
