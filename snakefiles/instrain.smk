@@ -37,8 +37,8 @@ rule prep_drep_input:
 
 rule cat_fasta:
     input:
-        fastas=expand('output/annotate/bakta/{renamed}/{renamed}.{ext}',
-                      renamed=genome_fps['renamed'])
+        fastas=lambda wildcards: expand('output/annotate/bakta/{renamed}/{renamed}.{wildcards.ext}',
+                                        renamed=genome_fps['renamed'])
     output:
         fasta_fp='output/instrain/input/dereplicated_genomes.{ext}'
     run:
@@ -50,10 +50,8 @@ rule cat_fasta:
 
 rule cat_fastas:
     input:
-        'output/instrain/input/dereplicated_genomes.fna',
-        'output/instrain/input/dereplicated_genomes.faa',
-        'output/instrain/input/dereplicated_genomes.ffn',
-        'output/instrain/input/dereplicated_genomes.gbff'
+        expand('output/instrain/input/dereplicated_genomes.fna',
+               ext=['fna','faa','ffn','gbff'])
 
 rule prep_stb_bakta:
     input:
