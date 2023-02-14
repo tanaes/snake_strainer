@@ -3,6 +3,8 @@ from os.path import join
 from os import makedirs
 from collections import OrderedDict
 
+localrules: rename_fasta, prep_bakta, annotate
+
 
 def simplify_fasta(old_fp, new_fp, new_name):
     contig_name_dict = OrderedDict({})
