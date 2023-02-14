@@ -135,7 +135,7 @@ rule map_reads:
 rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
-        reference='output/instrain/input/dereplicated_genomes.fna'
+        reference='output/instrain/input/dereplicated_genomes.fna',
         genes_file='output/instrain/input/dereplicated_genomes.gfa',
         stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:

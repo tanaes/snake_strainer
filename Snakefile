@@ -22,7 +22,8 @@ def input_genomes(ref_fp, prefix='sGB'):
 
         genomes['renamed'] = new_names
 
-        genomes.to_csv(splitext(ref_fp)[0] + '.renamed.' + splitext(ref_fp)[1])
+        genomes.to_csv(splitext(ref_fp)[0] + '.renamed' + splitext(ref_fp)[1],
+                       sep='\t')
 
     return(genomes)
 
