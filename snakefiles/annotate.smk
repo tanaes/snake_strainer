@@ -82,7 +82,4 @@ rule bakta:
 rule annotate:
     input:
         expand('output/annotate/bakta/{renamed}/{renamed}.tsv',
-               renamed=genome_fps['renamed']),
-        expand(contig_dict='output/genomes/renamed/contigs/{name[0]}.{name[1]}.txt',
-               name=[(x,
-                      genome_fps.loc[x, 'renamed']) for x in genome_fps.index])
+               renamed=genome_fps['renamed'])
