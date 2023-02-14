@@ -169,7 +169,7 @@ rule instrain_compare:
     input:
         profiles=expand(rules.instrain_profile.output.profile,
                         renamed=genome_fps['renamed']),
-        stb_file=rules.prep_drep.output.stb_file
+        stb_file='output/instrain/input/bakta/dereplicated_genomes.stb'
     output:
         compare=directory('output/instrain/output/compare')
     threads:
