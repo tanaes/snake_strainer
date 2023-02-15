@@ -135,6 +135,9 @@ rule map_reads:
         > {output.aln} 2> {log}
         """
 
+def get_mem_mb(wildcards, attempt, default=4000):
+    return attempt * default
+
 rule instrain_profile:
     input:
         aln=rules.map_reads.output.aln,
@@ -152,7 +155,7 @@ rule instrain_profile:
         res['instrain_profile']['threads']
     resources:
         partition = res['instrain_profile']['partition'],
-        mem_mb = res['instrain_profile']['mem_mb'],
+        mem_mb = get_mem_mb(default=res['instrain_profile']['mem_mb']),
         qos = res['instrain_profile']['qos'],
         time = res['instrain_profile']['time']
     benchmark:
