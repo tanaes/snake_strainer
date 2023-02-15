@@ -95,6 +95,8 @@ rule index_db:
         time = res['bowtie2_build']['time']
     params:
         other=config['params']['bowtie2']['index']
+    benchmark:
+        "output/benchmarks/instrain/index_db"
     shell:
         """
         bowtie2-build --threads {threads} {params.other} \
@@ -119,6 +121,8 @@ rule map_reads:
         mem_mb = res['map_reads']['mem_mb'],
         qos = res['map_reads']['qos'],
         time = res['map_reads']['time']
+    benchmark:
+        "output/benchmarks/instrain/map_reads/map_reads.{sample}"
     params:
         other=config['params']['bowtie2']['map']
     shell:
@@ -151,6 +155,8 @@ rule instrain_profile:
         mem_mb = res['instrain_profile']['mem_mb'],
         qos = res['instrain_profile']['qos'],
         time = res['instrain_profile']['time']
+    benchmark:
+        "output/benchmarks/instrain/profile/profile.{sample}"
     params:
         other=config['params']['instrain']['profile']
     shell:
@@ -186,6 +192,8 @@ rule instrain_compare:
         "../Envs/instrain.yaml"
     log:
         "output/logs/instrain/instrain_compare.log"
+    benchmark:
+        "output/benchmarks/instrain/compare"
     shell:
         """
         inStrain compare \
