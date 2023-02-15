@@ -155,7 +155,7 @@ rule instrain_profile:
         res['instrain_profile']['threads']
     resources:
         partition = res['instrain_profile']['partition'],
-        mem_mb = get_mem_mb(default=res['instrain_profile']['mem_mb']),
+        mem_mb = lambda wildcards, attempt: get_mem_mb(wildcards, attempt, default=res['instrain_profile']['mem_mb']),
         qos = res['instrain_profile']['qos'],
         time = res['instrain_profile']['time']
     benchmark:
