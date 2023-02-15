@@ -142,6 +142,8 @@ rule instrain_profile:
         bam='output/instrain/input/alignments/{sample}.sorted.bam'
     conda:
         "../Envs/instrain.yaml"
+    log:
+        "output/logs/instrain/instrain_profile.{sample}.log"
     threads:
         res['instrain_profile']['threads']
     resources:
@@ -160,7 +162,7 @@ rule instrain_profile:
         -g {input.genes_file} \
         -s {input.stb_file} \
         {params.other} \
-        --database_mode
+        --database_mode  2> {log} 1>&2
         """
 
 
